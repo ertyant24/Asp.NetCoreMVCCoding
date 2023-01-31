@@ -1,4 +1,5 @@
 using Asp.NetCoreMVCCoding.Datas;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Asp.NetCoreMVCCoding
@@ -17,6 +18,16 @@ namespace Asp.NetCoreMVCCoding
                 opts.UseSqlServer("Server=.;Database=WebApplicationDB;Trusted_Connection=true");
             });
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opts =>
+            {
+                opts.Cookie.Name = "User";
+                opts.ExpireTimeSpan = TimeSpan.FromDays(7);
+                opts.SlidingExpiration = false;
+                opts.LoginPath = "/Account/Login";
+                opts.LogoutPath = "/Account/Logout";
+                opts.AccessDeniedPath = "/Home/AccessDenied";
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -27,6 +38,8 @@ namespace Asp.NetCoreMVCCoding
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
