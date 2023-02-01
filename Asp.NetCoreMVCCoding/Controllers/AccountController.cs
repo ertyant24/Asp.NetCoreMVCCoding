@@ -2,12 +2,15 @@
 using Asp.NetCoreMVCCoding.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NETCore.Encrypt.Extensions;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace Asp.NetCoreMVCCoding.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly DatabaseContext _context;
@@ -19,12 +22,14 @@ namespace Asp.NetCoreMVCCoding.Controllers
             _configuration=configuration;
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
 
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
@@ -45,6 +50,7 @@ namespace Asp.NetCoreMVCCoding.Controllers
                     List<Claim> claims = new List<Claim>();
                     claims.Add(new Claim("Id", user.Id.ToString()));
                     claims.Add(new Claim("Name-Surname", user.FullName ?? string.Empty));
+                    claims.Add(new Claim(ClaimTypes.Role, user.Role));
                     claims.Add(new Claim("Username", user.Username));
 
                     ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -64,11 +70,13 @@ namespace Asp.NetCoreMVCCoding.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Register(Register model)
         {
@@ -107,7 +115,51 @@ namespace Asp.NetCoreMVCCoding.Controllers
 
         public IActionResult Profile()
         {
+            string userid = User.FindFirstValue("Id");
+
+            User user = _context.Users.FirstOrDefault(x => x.Id.ToString() == userid);
+
+            ViewData["FullName"] = user.FullName;
+
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult ProfileChangeFullName([Required][StringLength(50)]string? fullname)
+        {
+            if(ModelState.IsValid)
+            {
+                string userid = User.FindFirstValue("Id");
+
+                User user = _context.Users.FirstOrDefault(x => x.Id.ToString() == userid);
+
+                user.FullName = fullname;
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            return View("Profile");
+        }
+
+        [HttpPost]
+        public IActionResult ProfileChangePassword([Required][MinLength(6)][MaxLength(16)]string? password)
+        {
+            if(ModelState.IsValid)
+            {
+                string userid = User.FindFirstValue("id");
+
+                User user = _context.Users.FirstOrDefault(x => x.Id.ToString() == userid);
+
+                string hashedPassword = (_configuration.GetValue<string>("AppSettings : MD5Salt") + password).MD5();
+
+                user.Password = hashedPassword;
+
+                _context.SaveChanges();
+
+                ViewData["result"] = "PasswordChanged";  
+            }
+            return View("Profile");  
         }
 
         public IActionResult Logout()

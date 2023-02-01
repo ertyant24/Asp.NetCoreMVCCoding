@@ -15,7 +15,7 @@ namespace Asp.NetCoreMVCCoding
 
             builder.Services.AddDbContext<DatabaseContext>(opts =>
             {
-                opts.UseSqlServer("Server=.;Database=WebApplicationDB;Trusted_Connection=true");
+                opts.UseSqlServer("Server=LAPTOP-ELVN7Q4U\\SQLEXPRESS;Database=WebApplicationDB;Trusted_Connection=true");
             });
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opts =>
