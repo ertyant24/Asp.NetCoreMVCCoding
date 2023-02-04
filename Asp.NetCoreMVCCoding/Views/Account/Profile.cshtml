@@ -3,22 +3,39 @@
 </div>
 
 <div class="row mt-4">
-	<div class="col-4">
-		<div class="mb-4">
-			<div asp-validation-summary="All" class="text-danger small"></div>
+	<div class="col-6 offset-6">
+		<div asp-validation-summary="All" class="text-danger small"></div>
+	</div>
+	<div class="col-5">
+		<form method="post" asp-action="ProfileChangeImage" enctype="multipart/form-data">
+			<div class="row">
+			<div class="text-center mb-3">
+					<img src="~/Uploads/@ViewData["ProfileImage"]" alt="@User.FindFirst("Username")" class="img-thumbnail rounded-circle" width="128px"/>
+			</div>
+			<div class="form-group">
+					<label class="form-label">Profile Image</label>
+					<input type="file" name="file" accept=".jpg, .jpeg" class="form-control" />
+					<span class="small text-secondary"><i class="fa fa-info-circle"></i> Please Only jpg files</span>
+					<div class="d-grid mt-3">
+						<button class="btn btn-secondary" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+					</div>
+			</div>
 		</div>
+		</form>
+	</div>
+	<div class="col-5 offset-2">
 		<form method="post" asp-action="ProfileChangeFullName">
 			<label class="form-label">Name Surname</label>
 			<div class="input-group mb-3">
 				<input name="fullname" type="text" class="form-control" placeholder="Enter to Name and Surname" value="@ViewData["FullName"]">
-				<button class="btn btn-outline-secondary" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+				<button class="btn btn-secondary" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save</button>
 			</div>
 		</form>
 		<form method="post" asp-action="ProfileChangePassword">
 			<label class="form-label">Password</label>
 			<div class="input-group">
 				<input name="password" type="password" class="form-control" placeholder="Enter to Password">
-				<button class="btn btn-outline-secondary" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+				<button class="btn btn-secondary" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save</button>
 			</div>
 			@*@if(ViewData["result"] != null && ViewData["result"] == "PasswordChanged")
 			{

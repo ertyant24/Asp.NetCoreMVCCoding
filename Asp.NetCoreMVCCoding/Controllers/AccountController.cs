@@ -120,6 +120,7 @@ namespace Asp.NetCoreMVCCoding.Controllers
             User user = _context.Users.FirstOrDefault(x => x.Id.ToString() == userid);
 
             ViewData["FullName"] = user.FullName;
+            ViewData["ProfileImage"] = user.ProfileImageFileName;
 
             return View();
         }
@@ -162,7 +163,31 @@ namespace Asp.NetCoreMVCCoding.Controllers
             return View("Profile");  
         }
 
-        public IActionResult Logout()
+		public IActionResult ProfileChangeImage([Required]IFormFile file)
+		{
+            if(ModelState.IsValid)
+            {
+				string userid = User.FindFirstValue("id");
+				User user = _context.Users.FirstOrDefault(x => x.Id.ToString() == userid);
+
+				string fileName = $"pi_{userid}.jpg";
+				Stream stream = new FileStream($"wwwroot/Uploads/{fileName}", FileMode.OpenOrCreate);
+
+				file.CopyTo(stream);
+
+				stream.Close();
+				stream.Dispose();
+
+				user.ProfileImageFileName = fileName;
+				_context.SaveChanges();
+
+                return RedirectToAction(nameof(Profile));
+			}
+
+			return View("Profile");  
+		}
+
+		public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 

@@ -20,6 +20,9 @@ namespace Asp.NetCoreMVCCoding.Datas
         public bool Locked { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        [StringLength(250)]
+        public string? ProfileImageFileName { get; set; } = "";
+
         [Required]
         [StringLength(30)]
         public string Role { get; set; } = "user";
