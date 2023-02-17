@@ -1,0 +1,41 @@
+﻿@using Asp.NetCoreMVCCoding.Datas;
+@model User
+
+<div class="modal-header">
+	<h5 class="modal-title">Delete Member</h5>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+		<div class="row">
+			<div class="col-12 text-dark">Full Name</div>
+			<div class="col-12 mt-1">
+				@Model.FullName
+			</div>
+			<div class="col-12 text-dark mt-3">Username</div>
+			<div class="col-12 mt-1">
+				@Model.Username
+			</div>
+			<div class="col-12 text-dark mt-3">Locked of Status</div>
+			<div class="col-12 mt-1">
+				@if (Model.Locked == true)
+				{
+					<span>Locked</span>
+				}
+				else
+				{
+					<span>Not Locked</span>
+				}
+			</div>
+			<div class="col-12 text-dark mt-3">Role</div>
+			<div class="col-12 mt-1">
+				@Model.Role
+			</div>
+		</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i> Close</button>
+	<button id="btnSave" type="button" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+</div>
+
+

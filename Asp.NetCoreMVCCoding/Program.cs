@@ -1,4 +1,5 @@
 using Asp.NetCoreMVCCoding.Datas;
+using Asp.NetCoreMVCCoding.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,8 @@ namespace Asp.NetCoreMVCCoding
                 opts.LogoutPath = "/Account/Logout";
                 opts.AccessDeniedPath = "/Home/AccessDenied";
             });
+
+            builder.Services.AddScoped<IHasher, Hasher>();
 
             var app = builder.Build();
 

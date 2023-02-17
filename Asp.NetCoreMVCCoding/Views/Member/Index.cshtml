@@ -1,0 +1,54 @@
+﻿<div class="row">
+	<div class="col">
+		<h1 class="display-3">Members List</h1><hr />
+	</div>
+</div>
+
+<div class="row mt-3">
+	<div class="col">
+		<a class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target=".modal" data-ajax="true" data-ajax-method="Get" data-ajax-url="/Member/MemberAddPartial" data-ajax-update=".modal-content"><i class="fa-solid fa-person-circle-plus"></i> Add Member</a>
+		<a id="refresh" data-ajax="true" data-ajax-url="/Member/MemberListPartial" data-ajax-update="#panel" data-ajax-method="Get" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Reload</a>
+	</div>
+</div>
+
+<div class="row mt-4">
+	<div class="col">
+		<div id="panel">
+
+		</div>
+	</div>
+</div>
+
+<div class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+		</div>
+	</div>
+</div>
+
+<div id="modalEdit" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div id="modalEditContent" class="modal-content">
+		</div>
+	</div>
+</div>
+
+<div id="modalDelete" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div id="modalDeleteContent" class="modal-content">
+
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts{
+	<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+	<script>
+		$(function(){
+			$("#refresh").click();
+		})
+	</script>
+}
